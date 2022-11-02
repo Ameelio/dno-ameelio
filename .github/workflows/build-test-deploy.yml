@@ -10,6 +10,35 @@ env:
   RELEASE_VERSION: ${{ github.sha }}
 
 jobs:
+  deploy-mcc:
+    needs: [deploy-staging]
+    runs-on: buildjet-2vcpu-ubuntu-2004
+    if: ${{ startsWith(github.ref, 'refs/tags/prod-') }}
+    env:
+      ENV: prod
+      K8S_SERVER: ${{ secrets.K8S_ENDPOINT_MCC }}
+      K8S_TOKEN: ${{ secrets.K8S_TOKEN_MCC }}
+      K8S_CA_CERT: ${{ secrets.K8S_CA_CERT_MCC }}
+      SLACK_CHANNEL: '#infra-info'
+      SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+      FACILITY: MCC
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Render Manifests
+        run: ./scripts/deploy-release.sh --save-deploy --manifest-dir "manifests-${RELEASE_VERSION}-${FACILITY}" --debug
+
+      - name: Archive Rendered Kubernetes Manifests
+        uses: actions/upload-artifact@v1
+        with:
+          name: "manifests-${{ env.RELEASE_VERSION }}-${{ env.FACILITY }}"
+          path: "manifests-${{ env.RELEASE_VERSION }}-${{ env.FACILITY }}"
+
+      - name: Deploy new version
+        run: ./scripts/deploy-release.sh --apply-deploy --manifest-dir "manifests-${RELEASE_VERSION}-${FACILITY}" --debug
+
   #deploy-staging:
   #  runs-on: buildjet-2vcpu-ubuntu-2004
   #  #if: ${{ endsWith(github.ref, 'main') || endsWith(github.ref, '') }}
@@ -67,31 +96,3 @@ jobs:
   #    - name: Deploy new version
   #      run: ./scripts/deploy-release.sh --apply-deploy --manifest-dir "manifests-${RELEASE_VERSION}-${ENV}" --debug
 
-  deploy-mcc:
-    needs: [deploy-staging]
-    runs-on: buildjet-2vcpu-ubuntu-2004
-    if: ${{ startsWith(github.ref, 'refs/tags/prod-') }}
-    env:
-      ENV: prod
-      K8S_SERVER: ${{ secrets.K8S_ENDPOINT_MCC }}
-      K8S_TOKEN: ${{ secrets.K8S_TOKEN_MCC }}
-      K8S_CA_CERT: ${{ secrets.K8S_CA_CERT_MCC }}
-      SLACK_CHANNEL: '#infra-info'
-      SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
-      FACILITY: MCC
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Render Manifests
-        run: ./scripts/deploy-release.sh --save-deploy --manifest-dir "manifests-${RELEASE_VERSION}-${FACILITY}" --debug
-
-      - name: Archive Rendered Kubernetes Manifests
-        uses: actions/upload-artifact@v1
-        with:
-          name: "manifests-${{ env.RELEASE_VERSION }}-${{ env.FACILITY }}"
-          path: "manifests-${{ env.RELEASE_VERSION }}-${{ env.FACILITY }}"
-
-      - name: Deploy new version
-        run: ./scripts/deploy-release.sh --apply-deploy --manifest-dir "manifests-${RELEASE_VERSION}-${FACILITY}" --debug
