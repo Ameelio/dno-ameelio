@@ -15,11 +15,10 @@ jobs:
     #if: ${{ endsWith(github.ref, 'main') || endsWith(github.ref, '') }}
     env:
       ENV: staging
-      K8S_SERVER: https://79aad049-3068-4ca9-a029-e1587c7021fd.k8s.ondigitalocean.com:443
-      #K8S_SERVER: ${{ secrets.K8S_ENDPOINT_STAGING }}
+      K8S_SERVER: ${{ secrets.K8S_ENDPOINT_STAGING }}
+      K8S_TOKEN: ${{ secrets.K8S_TOKEN_STAGING }}
+      K8S_CA_CERT: ${{ secrets.K8S_CA_CERT_STAGING }}
       SLACK_CHANNEL: '#infra-info'
-      K8S_TOKEN: ${{ secrets.K8S_TOKEN_DEV }}
-      K8S_CA_CERT: ${{ secrets.K8S_CA_CERT_DEV }}
       SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
     steps:
