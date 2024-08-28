@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-NEW_VERSION="16fbd7231019434a89406c0c2a677469547af22c"
+NEW_VERSION="5974df2cabfa244d2cf7b8cba4a8c2fe4ba6af4a"
 
 if [ -z "$1" ]; then
   echo "New version not specified as first arg.  Using ${NEW_VERSION}.  Make sure that's what you want"
