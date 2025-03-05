@@ -29,7 +29,7 @@ jobs:
         run: ./scripts/deploy-release.sh --save-deploy --manifest-dir "manifests-${RELEASE_VERSION}-${ENV}" --debug
 
       - name: Archive Rendered Kubernetes Manifests
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: "manifests-${{ env.RELEASE_VERSION }}-${{ env.ENV }}"
           path: "manifests-${{ env.RELEASE_VERSION }}-${{ env.ENV }}"
@@ -57,7 +57,7 @@ jobs:
         run: ./scripts/deploy-release.sh --save-deploy --manifest-dir "manifests-${RELEASE_VERSION}-${ENV}" --debug
 
       - name: Archive Rendered Kubernetes Manifests
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: "manifests-${{ env.RELEASE_VERSION }}-${{ env.ENV }}"
           path: "manifests-${{ env.RELEASE_VERSION }}-${{ env.ENV }}"
@@ -86,7 +86,7 @@ jobs:
         run: ./scripts/deploy-release.sh --save-deploy --manifest-dir "manifests-${RELEASE_VERSION}-${FACILITY}" --debug
 
       - name: Archive Rendered Kubernetes Manifests
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: "manifests-${{ env.RELEASE_VERSION }}-${{ env.FACILITY }}"
           path: "manifests-${{ env.RELEASE_VERSION }}-${{ env.FACILITY }}"
