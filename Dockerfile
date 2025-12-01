@@ -1,4 +1,4 @@
-FROM almalinux:8.6
+FROM almalinux:8.10
 
 #
 # almalinux was used as a base image here instead of the Red Hat UBI image because
