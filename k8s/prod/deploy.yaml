@@ -65,7 +65,7 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
       containers:
-      - image: docker.io/freedomben/domain-name-operator:61deb96b56b9df63b752a0907f5e36f08f5e925e
+      - image: docker.io/freedomben/domain-name-operator:e0edb21d6c0feb91d7fb319635e99f02b78dbd48
         name: domain-name-operator
         imagePullPolicy: Always
         envFrom:
