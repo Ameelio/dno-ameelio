@@ -159,7 +159,7 @@ metadata:
   name: domain-name-operator
   namespace: domain-name-operator-staging
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: domain-name-operator
